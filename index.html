@@ -1890,99 +1890,65 @@ window.hhClearOldProducts=function(){
 <script id="hh-v22-dashboard-shortcuts">
 (function(){document.addEventListener('click',function(e){const b=e.target.closest('[data-jump]');if(!b)return;const id=b.getAttribute('data-jump');if(window.__hhOpenAdminModule)window.__hhOpenAdminModule(id)});})();
 </script>
-</body></html>
 
-<!-- HomeHack: Supabase Google Authentication (browser client; publishable key only) -->
-<style id="hh-supabase-auth-styles">
-.hh-auth-card{border:1px solid #e4ebe4;background:linear-gradient(145deg,#fbfdf9,#f0f6ee);border-radius:18px;padding:18px;margin:14px 0 22px}
-.hh-auth-card h3{margin:0 0 7px;color:#183b2b}.hh-auth-card p{margin:6px 0 12px;color:#647268;line-height:1.55;overflow-wrap:anywhere}
-.hh-auth-google{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:420px;min-height:48px;border:1px solid #d8e0d8;border-radius:12px;background:#fff;color:#202124;font-weight:700;font-size:15px;cursor:pointer;padding:12px 16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.hh-auth-google:disabled{opacity:.65;cursor:wait}.hh-auth-google svg{width:19px;height:19px;flex:none}.hh-auth-signout{margin-top:8px}.hh-auth-state{font-size:13px;color:#647268}.hh-auth-error{color:#a52828!important}
+<style id="hh-supabase-google-auth-style">
+.hh-auth-card{border:1px solid #e7e9e2;border-radius:16px;padding:18px;margin:14px 0;background:#fff}
+.hh-auth-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#1f5138;color:#fff;border:0;border-radius:28px;padding:13px 18px;font-weight:750;min-height:46px}
+.hh-auth-btn.secondary{background:#f1f3ed;color:#263329}
+.hh-auth-status{font-size:13px;line-height:1.5;color:#657064;margin:8px 0}
+.hh-auth-user{font-weight:700;overflow-wrap:anywhere}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
-<script id="hh-supabase-google-auth-v1">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+<script id="hh-supabase-google-auth">
 (function(){
-  'use strict';
-  const SUPABASE_URL = 'https://kflpeseosiwrjachmjhx.supabase.co';
-  // Public publishable key. Never place a service_role / secret key in browser code.
-  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_wLFrmcBPW1wat8-AOwCyBg_wII1afUb';
-  const SITE_REDIRECT = window.location.origin + window.location.pathname;
-  let client = null;
-  let currentUser = null;
-  let authReady = false;
-  let authError = '';
-
-  window.hhSupabaseUser = null;
-  window.hhSupabaseAuthReady = false;
-
-  function googleMark(){return '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 3.06 13.22l7.98 6.19C12.93 13.72 17.96 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.91c-.58 2.96-2.26 5.48-4.73 7.18l7.64 5.93c4.46-4.13 7.16-10.2 7.16-17.58z"/><path fill="#FBBC05" d="M10.04 28.59A14.4 14.4 0 0 1 9.25 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.57 10.78l7.47-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.87l-7.64-5.93c-2.12 1.42-4.84 2.26-8.26 2.26-6.04 0-11.07-4.22-12.96-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>'}
-
-  function authCard(){
-    if(currentUser){
-      const meta=currentUser.user_metadata||{};
-      const label=meta.full_name||meta.name||currentUser.email||'HomeHack customer';
-      const avatar=meta.avatar_url||meta.picture||'';
-      return `<div class="hh-auth-card"><div style="display:flex;align-items:center;gap:12px">${avatar?`<img src="${String(avatar).replace(/"/g,'&quot;')}" alt="" referrerpolicy="no-referrer" style="width:48px;height:48px;border-radius:50%;object-fit:cover">`:'<div style="width:48px;height:48px;border-radius:50%;background:#dcebdc;display:grid;place-items:center;font-size:22px">👤</div>'}<div style="min-width:0"><h3 style="margin:0">Welcome to HomeHack</h3><p style="margin:3px 0 0;font-weight:600;color:#263d30">${escapeHtml(label)}</p><p style="margin:2px 0 0;font-size:13px">${escapeHtml(currentUser.email||'Google account connected')}</p></div></div><p class="hh-auth-state">✓ Securely signed in with Google</p><button class="secondary hh-auth-signout" type="button" onclick="hhSignOut()">Sign out</button></div>`;
+  const SUPABASE_URL='https://kflpeseosiwrjachmjhx.supabase.co';
+  const SUPABASE_KEY='sb_publishable_wLFrmcBPW1wat8-AOwCyBg_wII1afUb';
+  const REDIRECT_URL='https://ashoksaini2984.github.io/homehack-store/';
+  let client=null, authUser=null, authReady=false;
+  try {
+    if(window.supabase && window.supabase.createClient){
+      client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+        auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}
+      });
+      client.auth.getSession().then(({data})=>{authUser=data.session?.user||null;authReady=true;refreshVisibleAccount();});
+      client.auth.onAuthStateChange((_event,session)=>{
+        authUser=session?.user||null;authReady=true;
+        setTimeout(refreshVisibleAccount,0);
+      });
     }
-    const msg=authError?`<p class="hh-auth-error">${escapeHtml(authError)}</p>`:(authReady?'<p>Sign in with Google to create or access your secure customer account.</p>':'<p>Connecting securely to HomeHack account services…</p>');
-    return `<div class="hh-auth-card"><h3>Your HomeHack account</h3>${msg}<button class="hh-auth-google" type="button" onclick="hhSignInGoogle()" ${authReady?'':'disabled'}>${googleMark()} Continue with Google</button><p class="hh-auth-state">Your Google password is never shared with HomeHack. Authentication is handled by Supabase.</p></div>`;
+  } catch(e){console.error('HomeHack auth init failed',e);}
+  function refreshVisibleAccount(){
+    const el=document.getElementById('account');
+    if(el && el.classList.contains('active')) renderAccount();
   }
-  function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-
-  window.renderAccount=function(){
-    const root=document.getElementById('account'); if(!root)return;
-    const localOrders=(typeof orders!=='undefined'&&Array.isArray(orders))?orders:[];
-    const localPoints=(typeof points!=='undefined'&&Number.isFinite(Number(points)))?Number(points):0;
-    const orderMarkup=localOrders.map(o=>`<div class="panel row"><div><b>${escapeHtml(o.id)}</b><div class="muted">${escapeHtml(o.date)} · ${escapeHtml(o.status)}</div></div><b>${typeof money==='function'?money(o.total):'₹'+o.total}</b></div>`).join('')||'<p class="muted">No orders in this browser yet. Orders placed before account sign-in are not automatically attached to this account.</p>';
-    root.innerHTML=`<button class="back" onclick="home()">← Home</button><h2>My account</h2>${authCard()}<div class="grid2"><div class="panel"><h3>Membership & rewards</h3><p class="muted">Membership: Free · Browser reward points: ${localPoints}</p><button class="primary" onclick="page('wallet')">My wallet</button> <button class="secondary" onclick="page('returns')">Returns</button></div><div class="panel"><h3>Quick links</h3><p><button class="textbtn" onclick="page('track')">Order history & tracking →</button></p><p><button class="textbtn" onclick="shop('All')">Continue shopping →</button></p></div></div><h3>Recent orders</h3>${orderMarkup}<p class="muted" style="margin-top:18px;font-size:12px">Secure sign-in is enabled. Cart, reward points and existing demo orders remain stored in this browser for now; they are not yet synced across devices.</p>`;
+  window.hhGoogleSignIn=async function(){
+    if(!client){alert('Secure login library could not load. Please refresh the page and try again.');return;}
+    const b=document.getElementById('hhGoogleLogin');if(b){b.disabled=true;b.textContent='Connecting to Google…';}
+    const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:REDIRECT_URL,queryParams:{prompt:'select_account'}}});
+    if(error){alert('Google login could not start: '+error.message);if(b){b.disabled=false;b.textContent='Continue with Google';}}
   };
-
-  window.hhSignInGoogle=async function(){
-    if(!client){authError='Authentication service did not load. Check your internet connection and refresh.';window.renderAccount();return;}
-    const btn=document.querySelector('.hh-auth-google'); if(btn){btn.disabled=true;btn.textContent='Opening Google…';}
-    authError='';
-    try{
-      const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:SITE_REDIRECT,queryParams:{prompt:'select_account'}}});
-      if(error)throw error;
-    }catch(err){
-      authError=err?.message||'Google sign-in could not be started. Please try again.';
-      window.renderAccount();
-    }
-  };
-  window.hhSignOut=async function(){
+  window.hhGoogleSignOut=async function(){
     if(!client)return;
     const {error}=await client.auth.signOut();
-    if(error){authError=error.message||'Could not sign out.';}
-    else{authError='';}
-    window.renderAccount();
+    if(error)alert('Sign out failed: '+error.message);else renderAccount();
   };
-
-  function updateUser(user){
-    currentUser=user||null;window.hhSupabaseUser=currentUser;
-    if(document.getElementById('account')?.classList.contains('active'))window.renderAccount();
-  }
-  function init(){
-    if(!window.supabase||typeof window.supabase.createClient!=='function'){
-      authError='Supabase library could not load. Please check your internet connection and refresh.';
-      authReady=true;window.hhSupabaseAuthReady=true;
-      if(document.getElementById('account')?.classList.contains('active'))window.renderAccount();
-      return;
+  const baseRender=window.renderAccount;
+  window.renderAccount=function(){
+    if(baseRender)baseRender();
+    const host=document.getElementById('account');if(!host||host.querySelector('#hhAuthPanel'))return;
+    const panel=document.createElement('section');panel.id='hhAuthPanel';panel.className='hh-auth-card';
+    const email=authUser?.email||'';
+    if(authUser){
+      const display=authUser.user_metadata?.full_name||authUser.user_metadata?.name||email||'HomeHack customer';
+      panel.innerHTML='<h3>Signed in to HomeHack</h3><p class="hh-auth-user"></p><p class="hh-auth-status">Your Google account is connected.</p><button class="hh-auth-btn secondary" type="button" onclick="hhGoogleSignOut()">Sign out</button>';
+      panel.querySelector('.hh-auth-user').textContent=display;
+    }else{
+      panel.innerHTML='<h3>Sign in / Create account</h3><p class="hh-auth-status">Use your Google account to securely sign in. New customers can create an account automatically.</p><button class="hh-auth-btn" id="hhGoogleLogin" type="button" onclick="hhGoogleSignIn()"><span aria-hidden="true">G</span> Continue with Google</button>';
+      if(!authReady){const p=document.createElement('p');p.className='hh-auth-status';p.textContent='Checking your sign-in status…';panel.appendChild(p);}
     }
-    try{
-      client=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
-      window.hhSupabaseClient=client;
-      client.auth.onAuthStateChange(function(_event,session){updateUser(session?.user||null);});
-      client.auth.getSession().then(({data,error})=>{
-        if(error)throw error;
-        updateUser(data?.session?.user||null);authReady=true;window.hhSupabaseAuthReady=true;
-        if(document.getElementById('account')?.classList.contains('active'))window.renderAccount();
-      }).catch(err=>{
-        authError=err?.message||'Could not check your sign-in session.';authReady=true;window.hhSupabaseAuthReady=true;
-        if(document.getElementById('account')?.classList.contains('active'))window.renderAccount();
-      });
-    }catch(err){authError=err?.message||'Could not initialize account services.';authReady=true;window.hhSupabaseAuthReady=true;}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+    host.prepend(panel);
+  };
 })();
 </script>
 
+</body></html>
