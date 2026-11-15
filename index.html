@@ -306,7 +306,7 @@ body.hh-admin-mode .v2-mobile-head{display:none}
 <main class="wrap">
 <section id="home" class="view active"><div class="hero"><div class="heroText"><div class="eyebrow">SMARTER LIVING STARTS HERE</div><h1>Small upgrades.<br>Better everyday.</h1><p>Thoughtful finds for your home, routine and everything in between. Discover useful products across everyday categories.</p><button class="primary" onclick="shop('All')">Explore collection →</button></div><div class="heroArt">⌂ ✦</div></div><div class="section"><div class="sectionHead"><div><div class="eyebrow">BROWSE BY INTEREST</div><h2>Shop categories</h2></div><span class="muted">8 collections</span></div><div class="cats" id="cats"></div></div><div class="section"><div class="sectionHead"><div><div class="eyebrow">CUSTOMER FAVOURITES</div><h2>Trending finds</h2></div><button class="textbtn" onclick="shop('All')">View all →</button></div><div class="products" id="featured"></div></div><div class="banner"><div><h2>Make room for better everyday.</h2><span class="muted" style="color:#ccc">Useful products. Simple shopping. Thoughtful choices.</span></div><button class="pill" onclick="shop('Home & Kitchen')">Shop home essentials →</button></div><div class="section grid2"><div class="panel">✦ <b>Curated everyday finds</b><p class="muted">Useful products across home, tech, lifestyle and more.</p></div><div class="panel">↗ <b>Easy order experience</b><p class="muted">Cart, order history and tracking preview in one place.</p></div></div></section>
 <section id="shop" class="view"><button class="back" onclick="home()">← Home</button><div class="row"><h2 id="shopTitle">Shop all</h2><span id="hh20-count" class="hh20-results" aria-live="polite"></span></div><input id="search" class="search" style="width:100%;max-width:100%;margin:8px 0" placeholder="Search products, categories..." oninput="renderShop()" aria-label="Search products"><div class="tabs" id="filters"></div><div class="hh20-filterbar"><label>Minimum price (₹)<input id="hh20-min" type="number" min="0" placeholder="Min" oninput="renderShop()"></label><label>Maximum price (₹)<input id="hh20-max" type="number" min="0" placeholder="Max" oninput="renderShop()"></label><label>Sort by<select id="sort" onchange="renderShop()"><option value="featured">Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option><option value="discount">Biggest discount</option><option value="name">Name: A to Z</option></select></label><label class="hh20-check"><input id="hh20-sale" type="checkbox" onchange="renderShop()"> Discounted products only</label><button class="hh20-clear" onclick="hh20ClearFilters()">Clear all filters</button></div><div class="products" id="shopItems"></div></section><section id="product" class="view"></section><section id="saved" class="view"></section><section id="cart" class="view"></section><section id="checkout" class="view"></section><section id="account" class="view"></section><section id="track" class="view"></section><section id="returns" class="view"></section><section id="wallet" class="view"></section><section id="admin" class="view"></section><section id="content" class="view"></section></main>
-<footer class="footer"><div class="wrap footgrid"><div><div class="logo">⌂ homehack<span>.india</span></div><p class="muted">Smart finds for everyday living.</p><div class="notice">Demo store: products, prices, orders and checkout are sample data. No real payment is collected.</div></div><div><b>Explore</b><button onclick="home()">Home</button><button onclick="shop('All')">Shop all</button><button onclick="page('track')">Track order</button><button onclick="page('account')">My account</button></div><div><b>Help & info</b><button onclick="page('contact')">Contact</button><button onclick="page('shipping')">Shipping policy</button><button onclick="page('returns')">Returns & refunds</button><button onclick="page('privacy')">Privacy policy</button><button onclick="page('admin')">Owner demo dashboard</button></div></div></footer><div class="toast" id="toast"></div>
+<footer class="footer"><div class="wrap footgrid"><div><div class="logo">⌂ homehack<span>.india</span></div><p class="muted">Smart finds for everyday living.</p><div class="notice">Demo store: products, prices, orders and checkout are sample data. No real payment is collected.</div></div><div><b>Explore</b><button onclick="home()">Home</button><button onclick="shop('All')">Shop all</button><button onclick="page('track')">Track order</button><button onclick="page('account')">My account</button></div><div><b>Help & info</b><button onclick="page('contact')">Contact</button><button onclick="page('shipping')">Shipping policy</button><button onclick="page('returns')">Returns & refunds</button><button onclick="page('privacy')">Privacy policy</button></div></div></footer><div class="toast" id="toast"></div>
 <script>
 const cats=[['Home & Kitchen','🍳'],['Electronics & Gadgets','🎧'],['Bags & Accessories','👜'],['Home Decor','🪴'],['Beauty & Personal Care','🧴'],['Fitness & Sports','🏃'],['Toys & Kids','🧸'],['Automobile Accessories','🚗']];
 const products=[['Compact Vegetable Chopper','Home & Kitchen',399,599,'🥕','BESTSELLER'],['Silicone Air Fryer Liners','Home & Kitchen',299,449,'🍲','POPULAR'],['Kitchen Sink Caddy','Home & Kitchen',349,499,'🧽',''],['Automatic Oil Dispenser','Home & Kitchen',449,699,'🫙',''],['Wireless Earbuds','Electronics & Gadgets',899,1299,'🎧','TRENDING'],['Portable Mini Fan','Electronics & Gadgets',499,799,'🌀',''],['Everyday Sling Bag','Bags & Accessories',699,999,'👜',''],['Travel Organiser Set','Bags & Accessories',399,599,'🧳',''],['Minimal Ceramic Planter','Home Decor',549,799,'🪴',''],['Ambient Table Lamp','Home Decor',799,1199,'💡',''],['Skincare Travel Kit','Beauty & Personal Care',349,499,'🧴',''],['Facial Cleansing Brush','Beauty & Personal Care',599,899,'🪥',''],['Resistance Band Set','Fitness & Sports',399,599,'🏋️',''],['Insulated Sports Bottle','Fitness & Sports',449,649,'🥤',''],['Creative Building Blocks','Toys & Kids',499,749,'🧩',''],['Kids Drawing Projector','Toys & Kids',899,1299,'🎨',''],['Car Seat Gap Organiser','Automobile Accessories',349,499,'🚘',''],['Car Cleaning Brush Kit','Automobile Accessories',299,449,'🧹','']].map((a,i)=>({id:i+1,name:a[0],cat:a[1],price:a[2],old:a[3],icon:a[4],tag:a[5]}));
@@ -1048,6 +1048,7 @@ body.hh-admin-mode #admin{padding:0;min-height:100vh}
  function open(id){active=id;const title=groups.flatMap(g=>g[1]).find(x=>x[0]===id)?.[1]||'Overview';const main=$('v2adminMain');if(!main)return;main.innerHTML=`<div class="v2-pagehead"><div><div class="v2-eyebrow">HOMEHACK OWNER STUDIO</div><h1>${title}</h1><p>Manage your store with a clear, consistent workspace.</p></div><span class="v2-demo">LOCAL DEMO</span></div>${content(id)}`;document.querySelectorAll('[data-v2-module]').forEach(b=>b.classList.toggle('active',b.dataset.v2Module===id));bind(id);main.scrollTop=0;window.scrollTo(0,0)}
  window.__hhOpenAdminModule=open;
  window.renderAdmin=function(){
+  if(window.hhRequireOwner && !window.hhRequireOwner())return;
   document.body.classList.add('hh-admin-mode');
   const root=$('admin');if(!root)return;
   root.innerHTML=`<div class="v2-admin"><aside class="v2-sidebar"><div class="v2-brand">⌂ homehack<span>.india</span><small>OWNER STUDIO</small></div><button class="v2-storefront" id="v2backstore">← Back to storefront</button>${groups.map(g=>`<div class="v2-navgroup"><small>${g[0]}</small>${g[1].map(x=>`<button data-v2-module="${x[0]}" class="${x[0]==='overview'?'active':''}"><i>${x[2]}</i>${x[1]}</button>`).join('')}</div>`).join('')}<div class="v2-sidebar-foot">HomeHack · Admin preview</div></aside><main class="v2-main"><div class="v2-mobile-head"><b>⌂ homehack<span>.india</span></b><button id="v2mobileback">Storefront ↗</button></div><div id="v2adminMain"></div></main></div>`;
@@ -1056,7 +1057,7 @@ body.hh-admin-mode #admin{padding:0;min-height:100vh}
   open('overview');
  };
  const oldPage=window.page;
- window.page=function(p){if(p!=='admin')document.body.classList.remove('hh-admin-mode');oldPage(p);if(p==='admin')document.body.classList.add('hh-admin-mode')};
+ window.page=function(p){if(p==='admin'){if(!window.hhRequireOwner())return;}if(p!=='admin')document.body.classList.remove('hh-admin-mode');oldPage(p);if(p==='admin')document.body.classList.add('hh-admin-mode')};
  window.home=(function(old){return function(){document.body.classList.remove('hh-admin-mode');old()}})(window.home);
  // Upgrade storefront product cards while retaining the original cart, wishlist and comparison actions.
  const oldCard=window.card;
@@ -1904,16 +1905,27 @@ window.hhClearOldProducts=function(){
   const SUPABASE_URL='https://kflpeseosiwrjachmjhx.supabase.co';
   const SUPABASE_KEY='sb_publishable_wLFrmcBPW1wat8-AOwCyBg_wII1afUb';
   const REDIRECT_URL='https://ashoksaini2984.github.io/homehack-store/';
-  let client=null, authUser=null, authReady=false;
+  let client=null, authUser=null, authReady=false, ownerAuthorized=false, ownerCheckToken=0;
+  const OWNER_EMAIL='ashoksaini2984@gmail.com';
+  async function verifyOwner(user){
+    const token=++ownerCheckToken; ownerAuthorized=false;
+    if(!user || (user.email||'').toLowerCase()!==OWNER_EMAIL.toLowerCase()) return false;
+    try {
+      const {data,error}=await client.from('profiles').select('role').eq('id',user.id).maybeSingle();
+      if(token!==ownerCheckToken) return false;
+      ownerAuthorized=!error && data?.role==='admin';
+    } catch(e){ console.error('Owner authorization check failed',e); ownerAuthorized=false; }
+    return ownerAuthorized;
+  }
   try {
     if(window.supabase && window.supabase.createClient){
       client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
         auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}
       });
-      client.auth.getSession().then(({data})=>{authUser=data.session?.user||null;authReady=true;refreshVisibleAccount();});
+      client.auth.getSession().then(async ({data})=>{authUser=data.session?.user||null;await verifyOwner(authUser);authReady=true;refreshVisibleAccount();});
       client.auth.onAuthStateChange((_event,session)=>{
         authUser=session?.user||null;authReady=true;
-        setTimeout(refreshVisibleAccount,0);
+        verifyOwner(authUser).then(()=>{setTimeout(refreshVisibleAccount,0);});
       });
     }
   } catch(e){console.error('HomeHack auth init failed',e);}
@@ -1932,6 +1944,15 @@ window.hhClearOldProducts=function(){
     const {error}=await client.auth.signOut();
     if(error)alert('Sign out failed: '+error.message);else renderAccount();
   };
+  window.hhIsOwner=function(){return !!(authUser && ownerAuthorized && (authUser.email||'').toLowerCase()===OWNER_EMAIL.toLowerCase());};
+  window.hhRequireOwner=function(){
+    if(!authReady){alert('Owner access check is still loading. Please wait a moment and try again.');return false;}
+    if(!authUser){alert('Owner login required. Please sign in with the owner Google account.');page('account');return false;}
+    if(!window.hhIsOwner()){alert('Access denied. This dashboard is only available to the HomeHack owner.');home();return false;}
+    return true;
+  };
+  const baseRenderAdmin=window.renderAdmin;
+  window.renderAdmin=function(){if(!window.hhRequireOwner())return; if(baseRenderAdmin)baseRenderAdmin();};
   const baseRender=window.renderAccount;
   window.renderAccount=function(){
     if(baseRender)baseRender();
